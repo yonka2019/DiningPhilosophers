@@ -18,7 +18,7 @@ using namespace std::chrono;
 #define SLEEP_TIME 5
 #define NUMBER_OF_FORKS 5
 #define NUMBER_OF_PHILOSOPHER 5
-#define EATS 1000000
+#define EATS_NUM 1000000
 
 DWORD WINAPI doWork(int* philosopherNumber);
 HANDLE mutexForks[NUMBER_OF_FORKS];
@@ -81,7 +81,7 @@ DWORD WINAPI doWork(int* philosopherNumber)
 
     cout << "phiphilosopher " << *philosopherNumber + 1 << "'s turn" << endl;
 
-    for (int i = 0; i < EATS; i++) {}
+    for (int i = 0; i < EATS_NUM; i++) {}
 
     ReleaseMutex(mutexForks[firstFork]);
     ReleaseMutex(mutexForks[secondFork]);

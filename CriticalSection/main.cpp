@@ -7,7 +7,7 @@ using namespace std::chrono;
 
 #define SLEEP_TIME 5
 #define NUMBER_OF_PHILOSOPHER 5
-#define EATS 1000000
+#define EATS_NUM 1000000
 
 DWORD WINAPI doWork(int* phiphilosopher);
 
@@ -71,7 +71,7 @@ DWORD WINAPI doWork(int* phiphilosopher)
                 if (TryEnterCriticalSection(&ghCARITICALSection2)) {
                     cout << "phiphilosopher " << *phiphilosopher << "'s turn" << endl;
 
-                    for (int i = 0; i < EATS; i++) {}
+                    for (int i = 0; i < EATS_NUM; i++) {}
 
                     LeaveCriticalSection(&ghCARITICALSection2);
                 }
@@ -83,7 +83,7 @@ DWORD WINAPI doWork(int* phiphilosopher)
                 if (TryEnterCriticalSection(&ghCARITICALSection3)) {
                     cout << "phiphilosopher " << *phiphilosopher << "'s turn" << endl;
 
-                    for (int i = 0; i < EATS; i++) {}
+                    for (int i = 0; i < EATS_NUM; i++) {}
 
                     LeaveCriticalSection(&ghCARITICALSection3);
                 }
@@ -95,7 +95,7 @@ DWORD WINAPI doWork(int* phiphilosopher)
                 if (TryEnterCriticalSection(&ghCARITICALSection4)) {
                     cout << "phiphilosopher " << *phiphilosopher << "'s turn" << endl;
 
-                    for (int i = 0; i < EATS; i++) {}
+                    for (int i = 0; i < EATS_NUM; i++) {}
 
                     LeaveCriticalSection(&ghCARITICALSection4);
                 }
@@ -107,7 +107,7 @@ DWORD WINAPI doWork(int* phiphilosopher)
                 if (TryEnterCriticalSection(&ghCARITICALSection5)) {
                     cout << "phiphilosopher " << *phiphilosopher << "'s turn" << endl;
 
-                    for (int i = 0; i < EATS; i++) {}
+                    for (int i = 0; i < EATS_NUM; i++) {}
 
                     LeaveCriticalSection(&ghCARITICALSection5);
                 }
@@ -119,7 +119,7 @@ DWORD WINAPI doWork(int* phiphilosopher)
                 if (TryEnterCriticalSection(&ghCARITICALSection1)) {
                     cout << "phiphilosopher " << *phiphilosopher << "'s turn" << endl;
 
-                    for (int i = 0; i < EATS; i++) {}
+                    for (int i = 0; i < EATS_NUM; i++) {}
 
                     LeaveCriticalSection(&ghCARITICALSection1);
                 }
