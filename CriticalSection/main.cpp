@@ -63,71 +63,68 @@ int main()
 DWORD WINAPI doWork(int* phiphilosopher)
 {
     auto start = high_resolution_clock::now();
-
-    if (1 == *phiphilosopher)
+    switch (*phiphilosopher)
     {
-        if (TryEnterCriticalSection(&ghCARITICALSection1)) {
-            if (TryEnterCriticalSection(&ghCARITICALSection2)) {
-                cout << "phiphilosopher 1's turn" << endl;
-
-                for (int i = 0; i < EATS; i++) {}
-
-                LeaveCriticalSection(&ghCARITICALSection2);
-            }
-            LeaveCriticalSection(&ghCARITICALSection1);
-        }
-    }
-    else if (2 == *phiphilosopher)
-    {
-        if (TryEnterCriticalSection(&ghCARITICALSection2)) {
-            if (TryEnterCriticalSection(&ghCARITICALSection3)) {
-                cout << "phiphilosopher 2's turn" << endl;
-
-                for (int i = 0; i < EATS; i++) {}
-
-                LeaveCriticalSection(&ghCARITICALSection3);
-            }
-            LeaveCriticalSection(&ghCARITICALSection2);
-        }
-    }
-    else if (3 == *phiphilosopher)
-    {
-        if (TryEnterCriticalSection(&ghCARITICALSection3)) {
-            if (TryEnterCriticalSection(&ghCARITICALSection4)) {
-                cout << "phiphilosopher 3's turn" << endl;
-
-                for (int i = 0; i < EATS; i++) {}
-
-                LeaveCriticalSection(&ghCARITICALSection4);
-            }
-            LeaveCriticalSection(&ghCARITICALSection3);
-        }
-    }
-    else if (4 == *phiphilosopher)
-    {
-        if (TryEnterCriticalSection(&ghCARITICALSection4)) {
-            if (TryEnterCriticalSection(&ghCARITICALSection5)) {
-                cout << "phiphilosopher 4's turn" << endl;
-
-                for (int i = 0; i < EATS; i++) {}
-
-                LeaveCriticalSection(&ghCARITICALSection5);
-            }
-            LeaveCriticalSection(&ghCARITICALSection4);
-        }
-    }
-    else
-    {
-        if (TryEnterCriticalSection(&ghCARITICALSection5)) {
+        case 1:
             if (TryEnterCriticalSection(&ghCARITICALSection1)) {
-                cout << "phiphilosopher 5's turn" << endl;
+                if (TryEnterCriticalSection(&ghCARITICALSection2)) {
+                    cout << "phiphilosopher " << *phiphilosopher << "'s turn" << endl;
 
-                for (int i = 0; i < EATS; i++) {}
+                    for (int i = 0; i < EATS; i++) {}
 
+                    LeaveCriticalSection(&ghCARITICALSection2);
+                }
                 LeaveCriticalSection(&ghCARITICALSection1);
             }
-            LeaveCriticalSection(&ghCARITICALSection5);
-        }
+            break;
+        case 2:
+            if (TryEnterCriticalSection(&ghCARITICALSection2)) {
+                if (TryEnterCriticalSection(&ghCARITICALSection3)) {
+                    cout << "phiphilosopher " << *phiphilosopher << "'s turn" << endl;
+
+                    for (int i = 0; i < EATS; i++) {}
+
+                    LeaveCriticalSection(&ghCARITICALSection3);
+                }
+                LeaveCriticalSection(&ghCARITICALSection2);
+            }
+            break;
+        case 3:
+            if (TryEnterCriticalSection(&ghCARITICALSection3)) {
+                if (TryEnterCriticalSection(&ghCARITICALSection4)) {
+                    cout << "phiphilosopher " << *phiphilosopher << "'s turn" << endl;
+
+                    for (int i = 0; i < EATS; i++) {}
+
+                    LeaveCriticalSection(&ghCARITICALSection4);
+                }
+                LeaveCriticalSection(&ghCARITICALSection3);
+            }
+            break;
+        case 4:
+            if (TryEnterCriticalSection(&ghCARITICALSection4)) {
+                if (TryEnterCriticalSection(&ghCARITICALSection5)) {
+                    cout << "phiphilosopher " << *phiphilosopher << "'s turn" << endl;
+
+                    for (int i = 0; i < EATS; i++) {}
+
+                    LeaveCriticalSection(&ghCARITICALSection5);
+                }
+                LeaveCriticalSection(&ghCARITICALSection4);
+            }
+            break;
+        default:
+            if (TryEnterCriticalSection(&ghCARITICALSection5)) {
+                if (TryEnterCriticalSection(&ghCARITICALSection1)) {
+                    cout << "phiphilosopher " << *phiphilosopher << "'s turn" << endl;
+
+                    for (int i = 0; i < EATS; i++) {}
+
+                    LeaveCriticalSection(&ghCARITICALSection1);
+                }
+                LeaveCriticalSection(&ghCARITICALSection5);
+            }
+            break;
     }
 
     auto stop = high_resolution_clock::now();
