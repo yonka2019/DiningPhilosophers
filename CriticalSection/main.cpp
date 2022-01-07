@@ -9,7 +9,7 @@ using namespace std::chrono;
 #define NUMBER_OF_PHILOSOPHER 5
 #define EATS 1000000
 
-DWORD WINAPI work(int* phiphilosopher);
+DWORD WINAPI doWork(int* phiphilosopher);
 
 CRITICAL_SECTION ghCARITICALSection1;
 CRITICAL_SECTION ghCARITICALSection2;
@@ -21,21 +21,21 @@ int main()
 {
     int index = 0;
 
-    HANDLE WINAPI th1 = NULL;
-    HANDLE WINAPI th2 = NULL;
-    HANDLE WINAPI th3 = NULL;
-    HANDLE WINAPI th4 = NULL;
-    HANDLE WINAPI th5 = NULL;
+    HANDLE WINAPI th1 = NULL,
+                  th2 = NULL,
+                  th3 = NULL,
+                  th4 = NULL,
+                  th5 = NULL;
 
     HANDLE threads[NUMBER_OF_PHILOSOPHER] = { th1, th2, th3, th4, th5 };
 
     CRITICAL_SECTION* sections[NUMBER_OF_PHILOSOPHER] = { &ghCARITICALSection1 , &ghCARITICALSection2 , &ghCARITICALSection3 , &ghCARITICALSection4 , &ghCARITICALSection5 };
 
-    int philosopher1 = 1;
-    int philosopher2 = 2;
-    int philosopher3 = 3;
-    int philosopher4 = 4;
-    int philosopher5 = 5;
+    int philosopher1 = 1,
+        philosopher2 = 2,
+        philosopher3 = 3,
+        philosopher4 = 4,
+        philosopher5 = 5;
 
     int* philosophers[5] = { &philosopher1 , &philosopher2 , &philosopher3 , &philosopher4 , &philosopher5 };
 
@@ -46,7 +46,7 @@ int main()
 
     for (auto i : threads)
     {
-        i = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)work, philosophers[index], 0, NULL);
+        i = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)doWork, philosophers[index], 0, NULL);
         index++;
         Sleep(SLEEP_TIME);
     }
@@ -60,7 +60,7 @@ int main()
     return 0;
 }
 
-DWORD WINAPI work(int* phiphilosopher)
+DWORD WINAPI doWork(int* phiphilosopher)
 {
     auto start = high_resolution_clock::now();
 
