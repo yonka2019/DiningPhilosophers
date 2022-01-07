@@ -63,6 +63,7 @@ int main()
 DWORD WINAPI work(int* phiphilosopher)
 {
     auto start = high_resolution_clock::now();
+
     if (1 == *phiphilosopher)
     {
         if (TryEnterCriticalSection(&ghCARITICALSection1)) {
@@ -128,9 +129,10 @@ DWORD WINAPI work(int* phiphilosopher)
             LeaveCriticalSection(&ghCARITICALSection5);
         }
     }
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
 
+    auto stop = high_resolution_clock::now();
+
+    auto duration = duration_cast<microseconds>(stop - start);
     cout << "Time taken using threads: " << duration.count() << " microseconds" << endl;
 
     return 0;
