@@ -27,7 +27,7 @@ int main()
 {
     int index = 0;
 
-    HANDLE WINAPI philosophers[NUMBER_OF_PHILOSOPHER];
+    HANDLE WINAPI philosophers[NUMBER_OF_PHILOSOPHER]{};
 
     for (auto i : mutexForks)
     {
