@@ -1,7 +1,11 @@
 /*
-Mutex is slower than threads because in threads there in the same process
-//but using mutexes means it needs to hop into different processes and use new resources everytime
-which needs more time which means threads are faster than mutexes!
+* Some interesting information:
+* Mutex is slower than threads because in threads there are in the same process
+* Mutexes each one is a different proces, which means, that it needs to switch between 
+* different processes and use new resources everytime
+* which takes more time.
+* >>> In conclcusion:
+* Threads faster than mutex. =O
 */
 
 #include <windows.h>
@@ -14,14 +18,13 @@ using namespace std::chrono;
 #define SLEEP_TIME 5
 #define NUMBER_OF_FORKS 5
 #define NUMBER_OF_PHILOSOPHER 5
+#define EATS 1000000
 
 DWORD WINAPI doWork(int* philosopherNumber);
 HANDLE mutexForks[NUMBER_OF_FORKS];
 
 int main()
 {
-    auto start = high_resolution_clock::now();
-
     int index = 0;
 
     HANDLE WINAPI philosophers[NUMBER_OF_PHILOSOPHER];
@@ -52,17 +55,13 @@ int main()
         CloseHandle(i);
     }
 
-    auto stop = high_resolution_clock::now();
-
-    auto duration = duration_cast<microseconds>(stop - start);
-
-    cout << "Time taken using mutexes: " << duration.count() << " microseconds" << endl;
-
     return 0;
 }
 
 DWORD WINAPI doWork(int* philosopherNumber)
 {
+    auto start = high_resolution_clock::now();
+
     int firstFork = 0;
     int secondFork = 0;
 
@@ -82,10 +81,15 @@ DWORD WINAPI doWork(int* philosopherNumber)
 
     cout << "phiphilosopher " << *philosopherNumber + 1 << "'s turn" << endl;
 
-    for (int i = 0; i < 1000000; i++) {}
+    for (int i = 0; i < EATS; i++) {}
 
     ReleaseMutex(mutexForks[firstFork]);
     ReleaseMutex(mutexForks[secondFork]);
+
+    auto stop = high_resolution_clock::now();
+
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << "[I] Time taken using processes (mutex): " << duration.count() << " microseconds" << endl;
 
     return 0;
 }
