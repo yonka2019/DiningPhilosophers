@@ -133,7 +133,7 @@ DWORD WINAPI doWork(int* phiphilosopher)
     auto stop = high_resolution_clock::now();
 
     auto duration = duration_cast<microseconds>(stop - start);
-    cout << "Time taken using threads: " << duration.count() << " microseconds" << endl;
+    cout << "Time taken using threads (critical section): " << duration.count() << " microseconds" << endl;
 
     return 0;
 }
