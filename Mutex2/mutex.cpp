@@ -25,7 +25,6 @@ int main(int argc, char* argv[])
     HANDLE second = OpenMutexA(MUTEX_ALL_ACCESS, FALSE, std::to_string(secondNum).data());
 
     const HANDLE mutForks[] = { first, second };
-
     if (mutForks[0] != 0)
         WaitForSingleObject(mutForks[0], INFINITE);
     if (mutForks[1] != 0)

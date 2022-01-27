@@ -21,9 +21,8 @@ int main()
     }
 
     for (int i = 0; i < FORKS; i++)
-    {
         mutexF[i] = CreateMutexA(NULL, FALSE, (LPCSTR)std::to_string(i + 1).data()); // create mutex to each one
-    }
+
     for (int i = 0; i < PHILOSOPHERS; i++)
     {
         std::wstring pName(L"Mutex2.exe "); 
@@ -34,9 +33,8 @@ int main()
     }
 
     for (int i = 0; i < PHILOSOPHERS; i++)
-    {
         WaitForSingleObject(processInfo[i].hProcess, INFINITE);
-    }
+
     system("Pause");
     return 0;
 }
