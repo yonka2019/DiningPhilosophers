@@ -1,95 +1,42 @@
-/*
-* Some interesting information:
-* Mutex is slower than threads because in threads there are in the same process
-* Mutexes each one is a different proces, which means, that it needs to switch between 
-* different processes and use new resources everytime
-* which takes more time.
-* >>> In conclcusion:
-* Threads faster than mutex. =O
-*/
-
 #include <windows.h>
 #include <iostream>
 #include <chrono>
+#include <string>
 
+#define FORKS 5
+#define PHILOSOPHERS 5
 using namespace std;
 using namespace std::chrono;
-
-#define SLEEP_TIME 5
-#define NUMBER_OF_FORKS 5
-#define NUMBER_OF_PHILOSOPHER 5
-#define EATS_NUM 1000000
-
-DWORD WINAPI doWork(int* philosopherNumber);
-HANDLE mutexForks[NUMBER_OF_FORKS];
-
+HANDLE mutexF[FORKS];
 int main()
 {
-    int index = 0;
+    STARTUPINFO startInfo[PHILOSOPHERS]{};
+    PROCESS_INFORMATION processInfo[PHILOSOPHERS]{};
 
-    HANDLE WINAPI philosophers[NUMBER_OF_PHILOSOPHER]{};
-
-    for (auto i : mutexForks)
+    for (int i = 0; i < PHILOSOPHERS; i++)
     {
-        i = CreateMutex(NULL, FALSE, NULL);
+        ZeroMemory(startInfo + i, sizeof(startInfo[i])); // fills memory blocks with zeros
+        startInfo[i].cb = sizeof(startInfo[i]);
+        ZeroMemory(processInfo + i, sizeof(processInfo[i])); // fills memory blocks with zeros
     }
 
-    for (int i = 0; i < NUMBER_OF_PHILOSOPHER; i++)
+    for (int i = 0; i < FORKS; i++)
     {
-        philosophers[i] = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)doWork, &i, 0, NULL);
-        Sleep(SLEEP_TIME);
+        mutexF[i] = CreateMutexA(NULL, FALSE, (LPCSTR)std::to_string(i + 1).data()); // create mutex to each one
+    }
+    for (int i = 0; i < PHILOSOPHERS; i++)
+    {
+        std::wstring pName(L"Mutex2.exe "); 
+
+        pName.append(std::to_wstring(i + 1));
+        CreateProcess(NULL, const_cast<WCHAR*>(pName.data()), NULL, NULL, FALSE, 0, NULL, NULL, startInfo + i, processInfo + i);
+        Sleep(5);
     }
 
-    for (auto i : philosophers)
+    for (int i = 0; i < PHILOSOPHERS; i++)
     {
-        WaitForSingleObject(i, INFINITE);
+        WaitForSingleObject(processInfo[i].hProcess, INFINITE);
     }
-
-    for (auto i : mutexForks)
-    {
-        CloseHandle(i);
-    }
-
-    for (auto i : philosophers)
-    {
-        CloseHandle(i);
-    }
-
-    return 0;
-}
-
-DWORD WINAPI doWork(int* philosopherNumber)
-{
-    auto start = high_resolution_clock::now();
-
-    int firstFork = 0;
-    int secondFork = 0;
-
-    if (*philosopherNumber == 4)
-    {
-        firstFork = *philosopherNumber;
-        secondFork = 0;
-    }
-    else
-    {
-        firstFork = *philosopherNumber;
-        secondFork = *philosopherNumber + 1;
-    }
-
-    WaitForSingleObject(mutexForks[firstFork], INFINITE);
-    WaitForSingleObject(mutexForks[secondFork], INFINITE);
-
-    cout << "phiphilosopher " << *philosopherNumber + 1 << "'s turn" << endl;
-
-    for (int i = 0; i < EATS_NUM; i++) {}
-
-    ReleaseMutex(mutexForks[firstFork]);
-    ReleaseMutex(mutexForks[secondFork]);
-
-    auto stop = high_resolution_clock::now();
-
-    auto duration = duration_cast<microseconds>(stop - start);
-    cout << "[I] Time taken using processes (mutex): " << duration.count() << " microseconds" << endl;
-
+    system("Pause");
     return 0;
 }
